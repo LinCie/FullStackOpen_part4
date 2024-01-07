@@ -4,7 +4,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const Blog = require("./models/Blog");
 const BlogServices = require("./models/services/BlogServices");
 const morgan = require("morgan");
 
