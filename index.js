@@ -1,11 +1,16 @@
 require("dotenv").config();
 
+// Express stuffs
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 const cors = require("cors");
+
+// DB Stuffs
 const mongoose = require("mongoose");
 const BlogServices = require("./models/services/BlogServices");
-const morgan = require("morgan");
+
+// Utility
 const logger = require("./utils/logger");
 
 mongoose.connect(process.env.MONGO_URI);
@@ -34,5 +39,5 @@ app.post("/api/blogs", async (request, response) => {
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  logger.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
