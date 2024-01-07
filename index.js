@@ -23,12 +23,13 @@ app.get("/api/blogs", async (request, response) => {
   }
 });
 
-app.post("/api/blogs", (request, response) => {
-  const blog = new Blog(request.body);
-
-  blog.save().then((result) => {
-    response.status(201).json(result);
-  });
+app.post("/api/blogs", async (request, response) => {
+  try {
+    const blog = await BlogServices.postBlog(request.body);
+    response.status(201).json(blog);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 const PORT = 3001;
