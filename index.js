@@ -6,6 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const BlogServices = require("./models/services/BlogServices");
 const morgan = require("morgan");
+const logger = require("./utils/logger");
 
 mongoose.connect(process.env.MONGO_URI);
 
@@ -18,7 +19,7 @@ app.get("/api/blogs", async (request, response) => {
     const blogs = await BlogServices.getBlogs();
     response.status(200).json(blogs);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 });
 
@@ -27,11 +28,11 @@ app.post("/api/blogs", async (request, response) => {
     const blog = await BlogServices.postBlog(request.body);
     response.status(201).json(blog);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 });
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.log(`Server running on port ${PORT}`);
 });
