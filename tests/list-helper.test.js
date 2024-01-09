@@ -93,3 +93,8 @@ it("favoriteBlogs returns a blog with the most likes", () => {
 
   expect(favoriteBlog).toEqual(blogs[2]);
 });
+
+it("shows correct author with the most blogs", () => {
+  const mostBlogs = listHelper.mostBlogs(blogs);
+  expect(mostBlogs).toEqual({ author: "Robert C. Martin", blogs: 3 });
+});
