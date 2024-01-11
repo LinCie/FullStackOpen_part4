@@ -59,10 +59,11 @@ describe("Blogs API", () => {
   it("successfully GET the blogs", async () => {
     const response = await api.get("/api/blogs");
 
+    expect(response.status).toBe(200);
     expect(response.body).toHaveLength(blogsList.blogs.length);
   });
 
-  it("id property to be defined", async () => {
+  it("have id property to be defined", async () => {
     const response = await api.get("/api/blogs");
 
     expect(response.body[0].id).toBeDefined();
