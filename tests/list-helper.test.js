@@ -61,6 +61,13 @@ describe("Blogs API", () => {
 
     expect(response.body).toHaveLength(blogsList.blogs.length);
   });
+
+  it("id property to be defined", async () => {
+    const response = await api.get("/api/blogs");
+
+    expect(response.body[0].id).toBeDefined();
+    expect(response.body[0]._id).toBeUndefined();
+  });
 });
 
 afterAll(async () => {
