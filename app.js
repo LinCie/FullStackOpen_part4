@@ -1,6 +1,7 @@
 // Utility
 const config = require("./utils/config");
 const middleware = require("./utils/middleware");
+require("express-async-errors");
 
 // Express stuffs
 const cors = require("cors");
