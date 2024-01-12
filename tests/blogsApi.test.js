@@ -42,8 +42,6 @@ describe("Posting a new blog", () => {
 
     const newBlog = await Blog.findOne(blogsList.newBlog);
     expect(newBlog).toBeDefined();
-
-    await Blog.deleteOne(blogsList.newBlog);
   });
 
   it("missing request likes will default to 0", async () => {
@@ -54,8 +52,6 @@ describe("Posting a new blog", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.likes).toBe(0);
-
-    await Blog.deleteOne(requestBody);
   });
 
   describe("when handling bad request", () => {
