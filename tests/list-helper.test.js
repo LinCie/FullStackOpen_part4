@@ -89,6 +89,16 @@ describe("Blogs API", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.likes).toBe(0);
+
+    await Blog.deleteOne(blogsList.newBlogWithoutLikes);
+  });
+
+  it("can handle bad request", async () => {
+    const response = await api
+      .post("/api/blogs")
+      .send(blogsList.newBlogWithoutTitle);
+
+    expect(response.status).toBe(400);
   });
 });
 
