@@ -60,7 +60,15 @@ const blogs = [
   },
 ];
 
+const newBlog = {
+  title: "TEST",
+  author: "TEST Author",
+  url: "http://www.example.com/",
+  likes: 5,
+};
+
 module.exports = {
   listWithOneBlog,
   blogs,
+  newBlog,
 };

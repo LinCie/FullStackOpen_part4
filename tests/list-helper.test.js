@@ -69,6 +69,18 @@ describe("Blogs API", () => {
     expect(response.body[0].id).toBeDefined();
     expect(response.body[0]._id).toBeUndefined();
   });
+
+  it("can POST new blog", async () => {
+    const postResponse = await api.post("/api/blogs").send(blogsList.newBlog);
+
+    expect(postResponse.status).toBe(201);
+    expect(postResponse.body).toMatchObject(blogsList.newBlog);
+
+    const newBlog = await Blog.findOne(blogsList.newBlog);
+    expect(newBlog).toBeDefined();
+
+    await Blog.deleteOne(blogsList.newBlog);
+  });
 });
 
 afterAll(async () => {
