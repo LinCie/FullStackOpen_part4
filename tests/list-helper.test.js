@@ -81,6 +81,15 @@ describe("Blogs API", () => {
 
     await Blog.deleteOne(blogsList.newBlog);
   });
+
+  it("missing request likes will default to 0", async () => {
+    const response = await api
+      .post("/api/blogs")
+      .send(blogsList.newBlogWithoutLikes);
+
+    expect(response.status).toBe(201);
+    expect(response.body.likes).toBe(0);
+  });
 });
 
 afterAll(async () => {

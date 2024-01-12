@@ -67,8 +67,15 @@ const newBlog = {
   likes: 5,
 };
 
+const newBlogWithoutLikes = {
+  title: "TEST LIKES",
+  author: "TEST Author",
+  url: "http://www.example.com/",
+};
+
 module.exports = {
   listWithOneBlog,
   blogs,
   newBlog,
+  newBlogWithoutLikes,
 };
