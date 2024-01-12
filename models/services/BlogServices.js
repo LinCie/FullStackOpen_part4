@@ -12,7 +12,12 @@ const postBlog = (data) => {
   return blog.save();
 };
 
+const deleteBlog = (id) => {
+  return Blog.findByIdAndDelete(id);
+};
+
 module.exports = {
   getBlogs,
   postBlog,
+  deleteBlog,
 };

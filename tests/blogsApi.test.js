@@ -88,6 +88,14 @@ describe("Posting a new blog", () => {
   });
 });
 
+describe("Deleting a blog", () => {
+  it("can delete a blog", async () => {
+    const response = await api.delete(`/api/blogs/${blogsList.blogs[0]._id}`);
+
+    expect(response.status).toBe(204);
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
