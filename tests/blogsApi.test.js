@@ -92,6 +92,17 @@ describe("Deleting a blog", () => {
   });
 });
 
+describe("Updating a blog", () => {
+  it("can update a blog", async () => {
+    const response = await api
+      .put(`/api/blogs/${blogsList.blogs[0]._id}`)
+      .send(blogsList.newBlog);
+
+    expect(response.status).toBe(201);
+    expect(response.body).toMatchObject(blogsList.newBlog);
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });

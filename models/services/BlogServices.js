@@ -16,8 +16,17 @@ const deleteBlog = (id) => {
   return Blog.findByIdAndDelete(id);
 };
 
+const updateBlog = (id, data) => {
+  return Blog.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  });
+};
+
 module.exports = {
   getBlogs,
   postBlog,
   deleteBlog,
+  updateBlog,
 };
