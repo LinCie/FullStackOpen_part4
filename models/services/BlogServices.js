@@ -5,7 +5,10 @@ const getBlogs = () => {
 };
 
 const postBlog = (data) => {
-  const blog = new Blog(data);
+  const blog = new Blog({
+    ...data,
+    likes: data.likes || 0,
+  });
   return blog.save();
 };
 
