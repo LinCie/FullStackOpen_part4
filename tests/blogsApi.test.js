@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 
-const blogsList = require("./blogsList");
+const blogsList = require("./lists/blogsList");
 const Blog = require("../models/Blog");
 
 const app = require("../app");
