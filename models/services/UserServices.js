@@ -1,6 +1,10 @@
 const User = require("../User");
 const bcrypt = require("bcrypt");
 
+const getUsers = () => {
+  return User.find({}).populate("blogs");
+};
+
 const signIn = async (user) => {
   const { name, username, password } = user;
 
@@ -17,5 +21,6 @@ const signIn = async (user) => {
 };
 
 module.exports = {
+  getUsers,
   signIn,
 };

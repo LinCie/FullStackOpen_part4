@@ -1,6 +1,11 @@
 const usersRouter = require("express").Router();
 const userServices = require("../models/services/UserServices");
 
+usersRouter.get("/", async (request, response, next) => {
+  const users = await userServices.getUsers();
+  response.status(200).json(users);
+});
+
 usersRouter.post("/", async (request, response, next) => {
   const { username, name, password } = request.body;
   if (!username || !name || !password) {
