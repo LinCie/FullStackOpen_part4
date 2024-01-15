@@ -51,6 +51,22 @@ describe("Sign In", () => {
       const response = await api.post("/api/users").send(usersList.initialUser);
       expect(response.status).toBe(400);
     });
+
+    it("rejects when username is less than three characters long", async () => {
+      const newUser = usersList.newUser;
+      newUser.username = "12";
+
+      const response = await api.post("/api/users").send(newUser);
+      expect(response.status).toBe(400);
+    });
+
+    it("rejects when password is less than three characters long", async () => {
+      const newUser = usersList.newUser;
+      newUser.password = "12";
+
+      const response = await api.post("/api/users").send(newUser);
+      expect(response.status).toBe(400);
+    });
   });
 });
 
