@@ -29,6 +29,9 @@ describe("Sign In", () => {
 
       const response = await api.post("/api/users").send(newUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
 
     it("rejects when name is missing", async () => {
@@ -37,6 +40,9 @@ describe("Sign In", () => {
 
       const response = await api.post("/api/users").send(newUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
 
     it("rejects when password is missing", async () => {
@@ -45,11 +51,17 @@ describe("Sign In", () => {
 
       const response = await api.post("/api/users").send(newUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
 
     it("rejects when username already exist", async () => {
       const response = await api.post("/api/users").send(usersList.initialUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
 
     it("rejects when username is less than three characters long", async () => {
@@ -58,6 +70,9 @@ describe("Sign In", () => {
 
       const response = await api.post("/api/users").send(newUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
 
     it("rejects when password is less than three characters long", async () => {
@@ -66,6 +81,9 @@ describe("Sign In", () => {
 
       const response = await api.post("/api/users").send(newUser);
       expect(response.status).toBe(400);
+
+      const users = await User.find({});
+      expect(users).toHaveLength(1);
     });
   });
 });
