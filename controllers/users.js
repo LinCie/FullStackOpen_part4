@@ -22,4 +22,9 @@ usersRouter.post("/", async (request, response, next) => {
   response.status(201).json(user);
 });
 
+usersRouter.post("/login", async (request, response, next) => {
+  const authorization = await userServices.logIn(request.body);
+  response.status(200).json({ authorization });
+});
+
 module.exports = usersRouter;
