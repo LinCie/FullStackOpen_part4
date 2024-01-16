@@ -6,7 +6,7 @@ const app = require("../app");
 const api = supertest(app);
 
 const User = require("../models/User");
-const usersList = require("./lists/usersList");
+const usersList = require("../utils/lists/usersList");
 
 beforeEach(async () => {
   await User.deleteMany({});

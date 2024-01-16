@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 
-const blogsList = require("./lists/blogsList");
+const blogsList = require("../utils/lists/blogsList");
 const Blog = require("../models/Blog");
+
+const User = require("../models/User");
+
+const testHelper = require("../utils/testHelper");
 
 const app = require("../app");
 
@@ -10,9 +14,15 @@ const api = supertest(app);
 
 beforeEach(async () => {
   await Blog.deleteMany({});
+  await User.deleteMany({});
+
+  const user = await testHelper.addInitialUser();
 
   for (const blog of blogsList.blogs) {
-    const blogObject = new Blog(blog);
+    const blogObject = new Blog({
+      ...blog,
+      author: user._id,
+    });
     await blogObject.save();
   }
 });
@@ -35,20 +45,38 @@ describe("Getting the blogs", () => {
 
 describe("Posting a new blog", () => {
   it("can post new blog", async () => {
-    const response = await api.post("/api/blogs").send(blogsList.newBlog);
+    const requestBody = {
+      ...blogsList.newBlog,
+    };
+    delete requestBody.author;
+
+    const authorization = await testHelper.getAuthorization();
+
+    const response = await api
+      .post("/api/blogs")
+      .send(requestBody)
+      .set("Authorization", authorization);
 
     expect(response.status).toBe(201);
-    expect(response.body).toMatchObject(blogsList.newBlog);
+    expect(response.body).toMatchObject(requestBody);
 
-    const newBlog = await Blog.findOne(blogsList.newBlog);
+    const newBlog = await Blog.findOne(requestBody);
     expect(newBlog).toBeDefined();
   });
 
   it("missing request likes will default to 0", async () => {
-    const requestBody = { ...blogsList.newBlog };
+    const requestBody = {
+      ...blogsList.newBlog,
+    };
+    delete requestBody.author;
     delete requestBody.likes;
 
-    const response = await api.post("/api/blogs").send(requestBody);
+    const authorization = await testHelper.getAuthorization();
+
+    const response = await api
+      .post("/api/blogs")
+      .send(requestBody)
+      .set("Authorization", authorization);
 
     expect(response.status).toBe(201);
     expect(response.body.likes).toBe(0);
@@ -56,28 +84,50 @@ describe("Posting a new blog", () => {
 
   describe("when handling bad request", () => {
     it("can handle where title is missing", async () => {
-      const requestBody = { ...blogsList.newBlog };
+      const requestBody = {
+        ...blogsList.newBlog,
+      };
+      delete requestBody.author;
       delete requestBody.title;
 
-      const response = await api.post("/api/blogs").send(requestBody);
+      const authorization = await testHelper.getAuthorization();
+
+      const response = await api
+        .post("/api/blogs")
+        .send(requestBody)
+        .set("Authorization", authorization);
 
       expect(response.status).toBe(400);
     });
 
     it("can handle where url is missing", async () => {
-      const requestBody = { ...blogsList.newBlog };
+      const requestBody = {
+        ...blogsList.newBlog,
+      };
+      delete requestBody.author;
       delete requestBody.url;
 
-      const response = await api.post("/api/blogs").send(requestBody);
+      const authorization = await testHelper.getAuthorization();
+
+      const response = await api
+        .post("/api/blogs")
+        .send(requestBody)
+        .set("Authorization", authorization);
 
       expect(response.status).toBe(400);
     });
 
     it("can handle where author is missing", async () => {
-      const requestBody = { ...blogsList.newBlog };
+      const requestBody = {
+        ...blogsList.newBlog,
+      };
+      delete requestBody.author;
       delete requestBody.author;
 
-      const response = await api.post("/api/blogs").send(requestBody);
+      const response = await api
+        .post("/api/blogs")
+        .send(requestBody)
+        .set("Authorization", testHelper.getAuthorization());
 
       expect(response.status).toBe(400);
     });

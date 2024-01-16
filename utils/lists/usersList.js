@@ -4,6 +4,12 @@ const initialUser = {
   passwordHash: "Hash",
 };
 
+const initialUserPassword = {
+  name: "John Doe",
+  username: "john",
+  password: "Hash",
+};
+
 const newUser = {
   name: "Rubert Peach",
   username: "peach",
@@ -12,5 +18,6 @@ const newUser = {
 
 module.exports = {
   initialUser,
+  initialUserPassword,
   newUser,
 };
