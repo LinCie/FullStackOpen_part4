@@ -22,7 +22,6 @@ const postBlog = async (data, user) => {
 
 const deleteBlog = async (id, user) => {
   const blog = await Blog.findById(id);
-  console.log(blog.author, user);
   if (!blog.author.equals(user._id)) {
     throw new customError.AuthorizationError("Blog owner does not match!");
   }
