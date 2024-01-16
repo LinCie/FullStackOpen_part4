@@ -132,9 +132,29 @@ describe("Posting a new blog", () => {
 
 describe("Deleting a blog", () => {
   it("can delete a blog", async () => {
-    const response = await api.delete(`/api/blogs/${blogsList.blogs[0]._id}`);
+    const authorization = await testHelper.getAuthorization();
+    const response = await api
+      .delete(`/api/blogs/${blogsList.blogs[0]._id}`)
+      .set("Authorization", authorization);
 
     expect(response.status).toBe(204);
+  });
+
+  describe("Authorization test", () => {
+    it("rejects when the jwt is missing", async () => {
+      const response = await api.delete(`/api/blogs/${blogsList.blogs[0]._id}`);
+
+      expect(response.status).toBe(401);
+    });
+
+    it("rejects when the author is different", async () => {
+      const authorization = await testHelper.addNewUserAndGetAuthorization();
+      const response = await api
+        .delete(`/api/blogs/${blogsList.blogs[0]._id}`)
+        .set("Authorization", authorization);
+
+      expect(response.status).toBe(401);
+    });
   });
 });
 
