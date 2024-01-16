@@ -1,5 +1,5 @@
 const Blog = require("../Blog");
-const User = require("../User");
+const customError = require("../../utils/customError");
 
 const getBlogs = () => {
   return Blog.find({}).populate("author");
@@ -20,7 +20,13 @@ const postBlog = async (data, user) => {
   return newBlog;
 };
 
-const deleteBlog = (id) => {
+const deleteBlog = async (id, user) => {
+  const blog = await Blog.findById(id);
+  console.log(blog.author, user);
+  if (!blog.author.equals(user._id)) {
+    throw new customError.AuthorizationError("Blog owner does not match!");
+  }
+
   return Blog.findByIdAndDelete(id);
 };
 
