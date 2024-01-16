@@ -5,19 +5,19 @@ const getBlogs = () => {
   return Blog.find({}).populate("author");
 };
 
-const postBlog = async (data) => {
-  const user = await User.findOne({});
-
+const postBlog = async (data, user) => {
   const blog = new Blog({
     ...data,
     author: user._id,
     likes: data.likes || 0,
   });
 
+  const newBlog = await blog.save();
+
   user.blogs = user.blogs.concat(blog._id);
   await user.save();
 
-  return blog.save();
+  return newBlog;
 };
 
 const deleteBlog = (id) => {
