@@ -117,19 +117,15 @@ describe("Posting a new blog", () => {
       expect(response.status).toBe(400);
     });
 
-    it("can handle where author is missing", async () => {
+    it("can handle where authorization is missing", async () => {
       const requestBody = {
         ...blogsList.newBlog,
       };
       delete requestBody.author;
-      delete requestBody.author;
 
-      const response = await api
-        .post("/api/blogs")
-        .send(requestBody)
-        .set("Authorization", testHelper.getAuthorization());
+      const response = await api.post("/api/blogs").send(requestBody);
 
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(401);
     });
   });
 });
