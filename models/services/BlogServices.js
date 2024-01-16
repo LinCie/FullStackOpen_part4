@@ -29,7 +29,12 @@ const deleteBlog = async (id, user) => {
   return Blog.findByIdAndDelete(id);
 };
 
-const updateBlog = (id, data) => {
+const updateBlog = async (id, data, user) => {
+  const blog = await Blog.findById(id);
+  if (!blog.author.equals(user._id)) {
+    throw new customError.AuthorizationError("Blog owner does not match!");
+  }
+
   return Blog.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,

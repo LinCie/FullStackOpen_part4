@@ -29,9 +29,18 @@ blogsRouter.delete(
   }
 );
 
-blogsRouter.put("/:id", async (request, response, next) => {
-  const blog = await BlogServices.updateBlog(request.params.id, request.body);
-  response.status(201).json(blog);
-});
+blogsRouter.put(
+  "/:id",
+  middleware.userExtractor,
+  async (request, response, next) => {
+    const blog = await BlogServices.updateBlog(
+      request.params.id,
+      request.body,
+      request.user,
+    );
+    response.status(201).json(blog);
+    // eslint-disable-next-line prettier/prettier
+  }
+);
 
 module.exports = blogsRouter;

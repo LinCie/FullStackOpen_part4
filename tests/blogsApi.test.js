@@ -160,12 +160,45 @@ describe("Deleting a blog", () => {
 
 describe("Updating a blog", () => {
   it("can update a blog", async () => {
+    const requestBody = blogsList.newBlog;
+    delete requestBody.author;
+
+    const authorization = await testHelper.getAuthorization();
+
     const response = await api
       .put(`/api/blogs/${blogsList.blogs[0]._id}`)
-      .send(blogsList.newBlog);
+      .send(requestBody)
+      .set("Authorization", authorization);
 
     expect(response.status).toBe(201);
-    expect(response.body).toMatchObject(blogsList.newBlog);
+    expect(response.body).toMatchObject(requestBody);
+  });
+
+  describe("Authorization test", () => {
+    it("rejects when the jwt is missing", async () => {
+      const requestBody = blogsList.newBlog;
+      delete requestBody.author;
+
+      const response = await api
+        .put(`/api/blogs/${blogsList.blogs[0]._id}`)
+        .send(requestBody);
+
+      expect(response.status).toBe(401);
+    });
+
+    it("rejects when the author is different", async () => {
+      const requestBody = blogsList.newBlog;
+      delete requestBody.author;
+
+      const authorization = await testHelper.addNewUserAndGetAuthorization();
+
+      const response = await api
+        .put(`/api/blogs/${blogsList.blogs[0]._id}`)
+        .send(requestBody)
+        .set("Authorization", authorization);
+
+      expect(response.status).toBe(401);
+    });
   });
 });
 
